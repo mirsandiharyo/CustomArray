@@ -182,7 +182,7 @@ public:
      * TODO: add checker for the case if N > NewElements.size() and preallocate memory
      * of var
      */
-    inline void add_elemets(Index_t N, variables<T, AlignmentN> NewElements) {
+    inline void add_elements(Index_t N, variables<T, AlignmentN> NewElements) {
         for(Index_t i = 0; i < N; ++i)
             var.push_back(NewElements(i));
         __it_end = var.end();
@@ -193,7 +193,7 @@ public:
      * \brief Adds N number of zero elements to the end of a vector
      * TODO: preallocate memory of var
      */
-    inline void add_elemets(Index_t N) {
+    inline void add_elements(Index_t N) {
         for(Index_t i = 0; i < N; ++i)
             var.push_back(0);
         __it_end = var.end();
@@ -578,124 +578,6 @@ public:
     inline Index_t NI_init() const {
         return NI;
     }
-
-    /*
-     * \warning Should be used only in 3d case, since NK is always 1
-     */
-    inline bool IsOnBoarder(Index_t _i, Index_t _j, Index_t _k) {
-        return (_i == 0 || _j == 0 || _k == 0 || _i >= NI - 1 || _j >= NJ - 1 || _k >= NK - 1);
-    }
-
-    inline bool IsOnBoarder(Index_t _i, Index_t _j) {
-        return (_i == 0 || _j == 0 || _i >= NI - 1 || _j >= NJ - 1);
-    }
-
-    inline bool IsOnBoarder(Index_t _i) {
-        return (_i == 0 || _i >= NI - 1);
-    }
-
-    /*!
-     * \brief Returns true if element is internal one for 3d field (not ghost)
-     * @param ind Triplet of indices pointing to the element
-     * @param ghost_level Number of ghost levels
-     */
-    inline bool IsInternal3d(const Index3 &ind, const uint8_t ghost_level) {
-        if (ind.i < ghost_level || ind.i > NI_m1 - ghost_level) return false;
-        if (ind.j < ghost_level || ind.j > NJ_m1 - ghost_level) return false;
-        if (ind.k < ghost_level || ind.k > NK_m1 - ghost_level) return false;
-        return true;
-    }
-    inline bool IsInternal3d(const Index3 &ind, const uint8_t ghost_level) const {
-        if (ind.i < ghost_level || ind.i > NI_m1 - ghost_level) return false;
-        if (ind.j < ghost_level || ind.j > NJ_m1 - ghost_level) return false;
-        if (ind.k < ghost_level || ind.k > NK_m1 - ghost_level) return false;
-        return true;
-    }
-
-    /*!
-     * \brief Returns true if element is internal one for 2d field (not ghost)
-     * @param ind Triplet of indices pointing to the element
-     * @param ghost_level Number of ghost levels
-     */
-    inline bool IsInternal2d(const Index3 &ind, const uint8_t ghost_level) {
-        if (ind.i < ghost_level || ind.i > NI_m1 - ghost_level) return false;
-        if (ind.j < ghost_level || ind.j > NJ_m1 - ghost_level) return false;
-        return true;
-    }
-    inline bool IsInternal2d(const Index3 &ind, const uint8_t ghost_level) const {
-        if (ind.i < ghost_level || ind.i > NI_m1 - ghost_level) return false;
-        if (ind.j < ghost_level || ind.j > NJ_m1 - ghost_level) return false;
-        return true;
-    }
-
-    /*!
-     * \brief Returns true if element is internal one for 1d field (not ghost)
-     * @param ind Triplet of indices pointing to the element
-     * @param ghost_level Number of ghost levels
-     */
-    inline bool IsInternal1d(const Index3 &ind, const uint8_t ghost_level) {
-        if (ind.i < ghost_level || ind.i > NI_m1 - ghost_level) return false;
-        return true;
-    }
-    inline bool IsInternal1d(const Index3 &ind, const uint8_t ghost_level) const {
-        if (ind.i < ghost_level || ind.i > NI_m1 - ghost_level) return false;
-        return true;
-    }
-
-    /*!
-     * \brief Returns true if element is internal one for 3d field (not ghost)
-     * The border at the end is evaluated with an \eoffset
-     * @param ind Triplet of indices pointing to the element
-     * @param ghost_level Number of ghost levels
-     * @param offset Offset "inside" from the end
-     */
-    inline bool IsInternal3d(const Index3 &ind, const uint8_t ghost_level, const Index3 &offset) {
-        if (ind.i < ghost_level || ind.i > NI_m1 - ghost_level - offset.i) return false;
-        if (ind.j < ghost_level || ind.j > NJ_m1 - ghost_level - offset.j) return false;
-        if (ind.k < ghost_level || ind.k > NK_m1 - ghost_level - offset.k) return false;
-        return true;
-    }
-    inline bool IsInternal3d(const Index3 &ind, const uint8_t ghost_level, const Index3 &offset) const {
-        if (ind.i < ghost_level || ind.i > NI_m1 - ghost_level - offset.i) return false;
-        if (ind.j < ghost_level || ind.j > NJ_m1 - ghost_level - offset.j) return false;
-        if (ind.k < ghost_level || ind.k > NK_m1 - ghost_level - offset.k) return false;
-        return true;
-    }
-
-    /*!
-     * \brief Returns true if element is internal one for 2d field (not ghost)
-     * The border at the end is evaluated with an \eoffset
-     * @param ind Triplet of indices pointing to the element
-     * @param ghost_level Number of ghost levels
-     * @param offset Offset "inside" from the end
-     */
-    inline bool IsInternal2d(const Index3 &ind, const uint8_t ghost_level, const Index3 &offset) {
-        if (ind.i < ghost_level || ind.i > NI_m1 - ghost_level - offset.i) return false;
-        if (ind.j < ghost_level || ind.j > NJ_m1 - ghost_level - offset.j) return false;
-        return true;
-    }
-    inline bool IsInternal2d(const Index3 &ind, const uint8_t ghost_level, const Index3 &offset) const {
-        if (ind.i < ghost_level || ind.i > NI_m1 - ghost_level - offset.i) return false;
-        if (ind.j < ghost_level || ind.j > NJ_m1 - ghost_level - offset.j) return false;
-        return true;
-    }
-
-    /*!
-     * \brief Returns true if element is internal one for 1d field (not ghost)
-     * The border at the end is evaluated with an \eoffset
-     * @param ind Triplet of indices pointing to the element
-     * @param ghost_level Number of ghost levels
-     * @param offset Offset "inside" from the end
-     */
-    inline bool IsInternal1d(const Index3 &ind, const uint8_t ghost_level, const Index3 &offset) {
-        if (ind.i < ghost_level || ind.i > NI_m1 - ghost_level - offset.i) return false;
-        return true;
-    }
-    inline bool IsInternal1d(const Index3 &ind, const uint8_t ghost_level, const Index3 &offset) const {
-        if (ind.i < ghost_level || ind.i > NI_m1 - ghost_level - offset.i) return false;
-        return true;
-    }
-
 
     /*!
      * \brief Returns reference to the internal stl vector of data
