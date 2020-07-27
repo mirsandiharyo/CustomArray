@@ -665,16 +665,6 @@ public:
         return *__it;
     }
 
-    /*!
-     * \brief Searches for a maximum element in a vector and its position
-     */
-    inline void FindMax(T &MAX, Index_t &Position, Index_t left_boundary, Index_t right_boundary) {
-
-        __it = max_element(var.begin() + left_boundary, var.begin() + right_boundary);
-        Position = distance(var.begin() + left_boundary, __it);
-        MAX = *__it;
-    }
-
     inline variables<T> &operator = (const variables<T> &other) {
         if (&other == this)
             return *this;
